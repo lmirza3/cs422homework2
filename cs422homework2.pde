@@ -56,6 +56,7 @@ int red=255;
 int green=255;
 int blue =255;
 int clickFlag = 0;
+int celsius = 0;
 boolean overBox = false;
 boolean locked = false;
 float xOffset = 0.0;
@@ -237,16 +238,19 @@ void draw() {
     recordingTemp = true;
     textSize(36);
     fill(255);
+    noFill();
+    rect(width/2-10,110,100,50);
+    text("°F",width/2+100,150);
     text(tempTracker,width/2,150);
   
     if (bakeClicked) {
-      cookFunction = "bake";
+      cookFunction = "BAKE";
     }
-    if (broilClicked) {
-      cookFunction = "broil";
+    else if (broilClicked) {
+      cookFunction = "BROIL";
     }
-    if (toastClicked) {
-      cookFunction = "toast";
+    else if (toastClicked) {
+      cookFunction = "TOAST";
     }
     displayTemp = tempTracker;
   }
@@ -262,7 +266,10 @@ void draw() {
     textSize(36);
     fill(255);
     //text(tempTracker,width/2,150);
+    noFill();
+    rect(width/2-10,110,100,50);
     text(timeTracker,width/2,150);
+    text("minutes",width/2+100,150);
     displayTime = timeTracker;
   }
   
@@ -277,13 +284,20 @@ void draw() {
     stroke(153);
     textSize(36);
     text(displayTemp, 50,100);
-    int celsius = int(displayTemp);
-    text((celsius-32)*(5/9), 50,160);
+    celsius = int(displayTemp);
+    celsius = (celsius-32);
+    text(celsius*5/9, 50,160);
     text(displayTime,50, 300);
     text(cookFunction,50, 400);
     println("temp" + displayTemp);
     println("time" + displayTime);
+    
+    
+    
   }
+  int timefart = int(displayTime);
+  displayTime = str(max(timefart - 1000, 0));
+    println(displayTime);
   
   if (cookSet) {
     background(cooking);
