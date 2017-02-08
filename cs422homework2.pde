@@ -28,7 +28,6 @@
 PImage img;
 PImage toaster;
 PImage homescreen;
-PImage toast;
 PImage modepage;
 PImage temperature;
 PImage time;
@@ -36,6 +35,10 @@ PImage cooking;
 PImage check;
 PImage thermometer;
 PImage numpad;
+PImage bagel;
+PImage pizza;
+PImage waffle;
+PImage toast;
 
 int screen;
 // some buttons
@@ -47,7 +50,15 @@ int buttonY = 75;
 float bx;
 float by;
 
+int c; //time
+int cmin;
+int csec;
+int cmil;
+int climit = 10; //10 min countdown
+
+
 //preset picture array
+PImage[] picArray;
 
 
 int rad = 60;
@@ -86,6 +97,8 @@ Button toastMode;
 Button checkMark;
 Button checkMark1;
 Button newButton;
+
+Button p0, p1, p2, p3;
 
 // no buttons / mode currently selected
 int selectedOne = -1;
@@ -150,7 +163,6 @@ void setup() {
   // grab an image to use later
   // as with sounds Processing likes files in the data directory, Processing.js outside that directory
   img = loadImage("toast.jpg", "jpg");
-  toast = loadImage("toast.jpg", "jpg");
   toaster = loadImage("toaster.jpg", "jpg");
   homescreen = loadImage("homescreen.jpg","jpg");
   modepage = loadImage("modepage.jpg","jpg");
@@ -161,9 +173,18 @@ void setup() {
   thermometer = loadImage("thermometer.png","png");
   numpad = loadImage("numpad.png","png");
   
+  f = loadFont("CourierNewPSMT-48.vlw");
+  textFont(f,32);
+  
+  picArray = new PImage[4];
+  
+  picArray[0] = loadImage("toast.png","png");
+  picArray[1] = loadImage("bagel.png","png");
+  picArray[2] = loadImage("pizza.png","png");
+  picArray[3] = loadImage("waffle.png","png");
+  
   img.loadPixels();
   toaster.loadPixels();
-  toast.loadPixels();
   homescreen.loadPixels();
   modepage.loadPixels();
   temperature.loadPixels();
@@ -172,8 +193,11 @@ void setup() {
   check.loadPixels();
   thermometer.loadPixels();
   numpad.loadPixels();
+  picArray[0].loadPixels();
+  picArray[1].loadPixels();
+  picArray[2].loadPixels();
+  picArray[3].loadPixels();
   
-  f = createFont("Arial",24,true);
   numberPad = new Button[10];
   
   bake = new Button(color(100),30,280,380,240,"BAKE");
@@ -193,6 +217,12 @@ void setup() {
   numberPad[7] = new Button (color(160), 625, 500,50,50,"8");
   numberPad[8] = new Button (color(180), 725, 500,50,50,"9");
   numberPad[9] = new Button (color(200), 580, 620,150,50,"0");
+  
+  p0 = new Button (color(20),width/2-250,height/2-250, 200,200, "0");
+  p1 = new Button (color(20),width/2-250,height/2, 200,200, "1");
+  p2 = new Button (color(20),width/2,height/2-250, 200,200, "2");
+  p3 = new Button (color(20),width/2,height/2, 200,200, "3");
+  
   
   firstNum = true;
 }
@@ -225,6 +255,13 @@ void draw() {
   
   if (on) {
     background(homescreen);
+    for (int i = 0; i <4 ; i++) {
+      picArray[i].resize(200,200);
+    }
+    image(picArray[0],width/2-250,height/2-250);
+    image(picArray[1],width/2-250,height/2);
+    image(picArray[2],width/2,height/2-250);
+    image(picArray[3],width/2,height/2);
   }
   
   if (menuClicked) {
@@ -287,21 +324,24 @@ void draw() {
     celsius = int(displayTemp);
     celsius = (celsius-32);
     text(celsius*5/9, 50,160);
-    text(displayTime,50, 300);
+    //text(displayTime,50, 300);
     text(cookFunction,50, 400);
     println("temp" + displayTemp);
     println("time" + displayTime);
     
-    
-    
+    climit = int(displayTime);
+    c = climit*60*1000 - millis();
+    cmin = (c/(60*1000));
+    csec = (c/(1000));
+    if (cmin >= 0 && csec >= 0) {
+      text(int(cmin) + ":" + int(csec)%60, 50, 300);
+    }
+    else if (cmin == 0 && csec == 0) {
+      println("FOOD DONE");
+      text("00:00", 50, 300);
+    }
   }
-  int timefart = int(displayTime);
-  displayTime = str(max(timefart - 1000, 0));
-    println(displayTime);
   
-  if (cookSet) {
-    background(cooking);
-  }
   currentTime = millis();
 }
 
@@ -310,12 +350,6 @@ void drawNumberScreen () {
   check.resize(100, 100);
   image(check, width-200, height-200);
   image(numpad, (width/2)-250, (height/2)-200);
-  /*
-  for (int i = 0; i<10; i++)
-  {
-    numberPad[i].display();
-  }
-  */
 }
 
 void mousePressed() {
@@ -353,11 +387,11 @@ void mousePressed() {
         tempTracker += int(numberPad[i].message);
     }
   }
-    for (int i = 0; i < 10; i++) {
-      if (numberPad[i].checkIfHover() == true && recordingTemp == false && recordingTime == true) {
-          timeTracker += int(numberPad[i].message);
-      }
-    }
+  for (int i = 0; i < 10; i++) {
+    if (numberPad[i].checkIfHover() == true && recordingTemp == false && recordingTime == true) {
+        timeTracker += int(numberPad[i].message);
+    }   
+  }
 }
 
 
