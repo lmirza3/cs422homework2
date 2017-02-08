@@ -235,10 +235,10 @@ void setup() {
   p2 = new Button (color(20),700,height/2-100, 200,200, "2");
   p3 = new Button (color(20),1000,height/2-100, 200,200, "3");
   
-  d0 = new Button (color(20),200,height/2-50, 50,50, "0");
-  d1 = new Button (color(20),500,height/2-50, 50,50, "1");
-  d2 = new Button (color(20),800,height/2-50, 50,50, "2");
-  d3 = new Button (color(20),1100,height/2-50, 50,50, "3");
+  d0 = new Button (color(20),150,height/2-100, 100,100, "0");
+  d1 = new Button (color(20),450,height/2-100, 100,100, "1");
+  d2 = new Button (color(20),750,height/2-100, 100,100, "2");
+  d3 = new Button (color(20),1050,height/2-100, 100,100, "3");
   
   
   
@@ -294,6 +294,11 @@ void draw() {
     fill(100);
     ellipse(1100,height/2-50,50, 50);
     
+    
+    d0.display();
+    d1.display();
+    d2.display();
+    d3.display();
   }
   
   if (pd0 || pd1 || pd2 || pd3) {
