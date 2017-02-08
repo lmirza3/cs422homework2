@@ -293,12 +293,6 @@ void draw() {
     ellipse(800,height/2-50,50, 50);
     fill(100);
     ellipse(1100,height/2-50,50, 50);
-    
-    
-    d0.display();
-    d1.display();
-    d2.display();
-    d3.display();
   }
   
   if (pd0 || pd1 || pd2 || pd3) {
