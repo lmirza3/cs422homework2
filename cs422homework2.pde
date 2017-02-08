@@ -173,7 +173,7 @@ void setup() {
   thermometer = loadImage("thermometer.png","png");
   numpad = loadImage("numpad.png","png");
   
-  f = loadFont("CourierNewPSMT-48.vlw");
+  f = loadFont("MalgunGothic-Semilight-48.vlw");
   textFont(f,32);
   
   picArray = new PImage[4];
@@ -258,10 +258,10 @@ void draw() {
     for (int i = 0; i <4 ; i++) {
       picArray[i].resize(200,200);
     }
-    image(picArray[0],width/2-250,height/2-250);
-    image(picArray[1],width/2-250,height/2);
-    image(picArray[2],width/2,height/2-250);
-    image(picArray[3],width/2,height/2);
+    image(picArray[0],100,height/2-100);
+    image(picArray[1],400,height/2-100);
+    image(picArray[2],700,height/2-100);
+    image(picArray[3],1000,height/2-100);
   }
   
   if (menuClicked) {
