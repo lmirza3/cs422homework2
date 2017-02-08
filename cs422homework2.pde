@@ -100,6 +100,8 @@ Button newButton;
 
 Button p0, p1, p2, p3;
 
+Button d0, d1, d2, d3;
+
 // no buttons / mode currently selected
 int selectedOne = -1;
 
@@ -145,6 +147,16 @@ boolean checkClicked = false;
 boolean cookSet = false;
 boolean first = false;
 boolean second = false;
+
+boolean ps0 = false;
+boolean ps1 = false;
+boolean ps2 = false;
+boolean ps3 = false;
+
+boolean pd0 = false;
+boolean pd1 = false;
+boolean pd2 = false;
+boolean pd3 = false;
 
 /////////////////////////////////////////////////////
 
@@ -218,10 +230,17 @@ void setup() {
   numberPad[8] = new Button (color(180), 725, 500,50,50,"9");
   numberPad[9] = new Button (color(200), 580, 620,150,50,"0");
   
-  p0 = new Button (color(20),width/2-250,height/2-250, 200,200, "0");
-  p1 = new Button (color(20),width/2-250,height/2, 200,200, "1");
-  p2 = new Button (color(20),width/2,height/2-250, 200,200, "2");
-  p3 = new Button (color(20),width/2,height/2, 200,200, "3");
+  p0 = new Button (color(20),100,height/2-100, 200,200, "0");
+  p1 = new Button (color(20),400,height/2-100, 200,200, "1");
+  p2 = new Button (color(20),700,height/2-100, 200,200, "2");
+  p3 = new Button (color(20),1000,height/2-100, 200,200, "3");
+  
+  d0 = new Button (color(20),200,height/2-50, 50,50, "0");
+  d1 = new Button (color(20),500,height/2-50, 50,50, "1");
+  d2 = new Button (color(20),800,height/2-50, 50,50, "2");
+  d3 = new Button (color(20),1100,height/2-50, 50,50, "3");
+  
+  
   
   
   firstNum = true;
@@ -262,6 +281,68 @@ void draw() {
     image(picArray[1],400,height/2-100);
     image(picArray[2],700,height/2-100);
     image(picArray[3],1000,height/2-100);
+  }
+  
+  if (ps0 || ps1 || ps2 || ps3) {
+    background(toaster);
+    fill(255);
+    ellipse(200,height/2-50,50, 50);
+    fill(200);
+    ellipse(500,height/2-50,50, 50);
+    fill(150);
+    ellipse(800,height/2-50,50, 50);
+    fill(100);
+    ellipse(1100,height/2-50,50, 50);
+    
+  }
+  
+  if (pd0 || pd1 || pd2 || pd3) {
+    background(cooking);
+    if (pd0) {
+      displayTemp = str(200);
+      displayTime = str(1);
+    }
+    if (pd1) {
+      displayTemp = str(250);
+      displayTime = str(3);
+    }
+    if (pd2) {
+      displayTemp = str(300);
+      displayTime = str(5);
+    }
+    if (pd3) {
+      displayTemp = str(400);
+      displayTime = str(10);
+    }
+    fill(255);
+    noFill();
+    rect(48,60,100,50);
+    rect(48,120,100,50);
+    text("°F", 160,100);
+    text("°C", 160,150);
+    stroke(153);
+    textSize(36);
+    text(displayTemp, 50,100);
+    celsius = int(displayTemp);
+    celsius = (celsius-32);
+    text(celsius*5/9, 50,160);
+    //text(displayTime,50, 300);
+    text(cookFunction,50, 400);
+    println("temp" + displayTemp);
+    println("time" + displayTime);
+    
+    climit = int(displayTime);
+    c = climit*60*1000 - millis();
+    cmin = (c/(60*1000));
+    csec = (c/(1000));
+    if (cmin >= 0 && csec >= 0) {
+      text(int(cmin) + ":" + int(csec)%60, 50, 300);
+    }
+    else if (cmin == 0 && csec == 0) {
+      println("FOOD DONE");
+      text("00:00", 50, 300);
+    }
+    
   }
   
   if (menuClicked) {
@@ -391,6 +472,30 @@ void mousePressed() {
     if (numberPad[i].checkIfHover() == true && recordingTemp == false && recordingTime == true) {
         timeTracker += int(numberPad[i].message);
     }   
+  }
+  if (p0.checkIfHover()) {
+    ps0 = true;
+  }
+  if (p1.checkIfHover()) {
+    ps1 = true;
+  }
+  if (p2.checkIfHover()) {
+    ps2 = true;
+  }
+  if (p3.checkIfHover()) {
+    ps3 = true;
+  }
+  if (d0.checkIfHover()) {
+    pd0 = true;
+  }
+  if (d1.checkIfHover()) {
+    pd1 = true;
+  }
+  if (d2.checkIfHover()) {
+    pd2 = true;
+  }
+  if (d3.checkIfHover()) {
+    pd3 = true;
   }
 }
 
