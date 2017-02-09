@@ -180,8 +180,8 @@ void setup() {
   thermometer = loadImage("thermometer.png","png");
   numpad = loadImage("numpad.png","png");
   
-  f = loadFont("MalgunGothic-Semilight-48.vlw");
-  textFont(f,32);
+  f = createFont("Abel",32);
+  textFont(f);
   
   picArray = new PImage[4];
   
@@ -393,31 +393,31 @@ void draw() {
     background(cooking);
     fill(255);
     noFill();
+    rect(48,60,100,50);
+    rect(48,120,100,50);
+    text("°F", 160,100);
+    text("°C", 160,150);
     stroke(153);
     textSize(36);
-    textAlign(LEFT);
-    text(displayTemp + "  °F", 50,100);
+    text(displayTemp, 50,100);
     celsius = int(displayTemp);
     celsius = (celsius-32);
-    textSize(28);
-    text(celsius*5/9 + "  °C", 50,140);
-    textSize(36);
-    textAlign(RIGHT);
-    text("MODE: " + cookFunction,width-30, 100);
+    text(celsius*5/9, 50,160);
+    //text(displayTime,50, 300);
+    text(cookFunction,50, 400);
+    println("temp" + displayTemp);
+    println("time" + displayTime);
     
     climit = int(displayTime);
     c = climit*60*1000 - millis();
     cmin = (c/(60*1000));
     csec = (c/(1000));
     if (cmin >= 0 && csec >= 0) {
-      String timeText = int(cmin) + ":" + int(csec)%60;
-      textSize(42);
-      textAlign(CENTER);
-      text(timeText, width/2,100);
+      text(int(cmin) + ":" + int(csec)%60, 50, 300);
     }
-    else {
-      cmin = 0; csec = 0;
-      text("Your Food is Ready!",width/2,height/2);
+    else if (cmin == 0 && csec == 0) {
+      println("FOOD DONE");
+      text("00:00", 50, 300);
     }
   }
   
@@ -472,7 +472,6 @@ void mousePressed() {
     }   
   }
   if (p0.checkIfHover()) {
-    
     ps0 = true;
   }
   if (p1.checkIfHover()) {
