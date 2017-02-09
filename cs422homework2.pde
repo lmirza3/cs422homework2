@@ -23,6 +23,7 @@
 //https://cdn0.iconfinder.com/data/icons/travel-line-icons-vol-1/48/025-512.png
 //https://cdn1.iconfinder.com/data/icons/material-core/20/check-circle-outline-512.png
 
+import processing.sound.*;
 
 // placeholder for future image
 PImage img;
@@ -35,14 +36,10 @@ PImage cooking;
 PImage check;
 PImage thermometer;
 PImage numpad;
-PImage bagel;
-PImage pizza;
-PImage waffle;
-PImage toast;
+
 
 int screen;
-// some buttons
-int[][] buttons = { {50, 100}, {50, 200}, {50, 300}};
+
 int buttonX = 100;
 int buttonY = 75;
 
@@ -174,7 +171,6 @@ void setup() {
   
   // grab an image to use later
   // as with sounds Processing likes files in the data directory, Processing.js outside that directory
-  img = loadImage("toast.jpg", "jpg");
   toaster = loadImage("toaster.jpg", "jpg");
   homescreen = loadImage("homescreen.jpg","jpg");
   modepage = loadImage("modepage.jpg","jpg");
@@ -299,46 +295,51 @@ void draw() {
     if (pd0) {
       displayTemp = str(200);
       displayTime = str(1);
+      cookFunction = "PRESET";
     }
     if (pd1) {
       displayTemp = str(250);
       displayTime = str(3);
+      cookFunction = "PRESET";
     }
     if (pd2) {
       displayTemp = str(300);
       displayTime = str(5);
+      cookFunction = "PRESET";
     }
     if (pd3) {
       displayTemp = str(400);
       displayTime = str(10);
+      cookFunction = "PRESET";
     }
-    fill(255);
+   
+   fill(255);
     noFill();
-    rect(48,60,100,50);
-    rect(48,120,100,50);
-    text("°F", 160,100);
-    text("°C", 160,150);
     stroke(153);
     textSize(36);
-    text(displayTemp, 50,100);
+    textAlign(LEFT);
+    text(displayTemp + "  °F", 50,100);
     celsius = int(displayTemp);
     celsius = (celsius-32);
-    text(celsius*5/9, 50,160);
-    //text(displayTime,50, 300);
-    text(cookFunction,50, 400);
-    println("temp" + displayTemp);
-    println("time" + displayTime);
+    textSize(28);
+    text(celsius*5/9 + "  °C", 50,140);
+    textSize(36);
+    textAlign(RIGHT);
+    text("MODE: " + cookFunction,width-30, 100);
     
     climit = int(displayTime);
     c = climit*60*1000 - millis();
     cmin = (c/(60*1000));
     csec = (c/(1000));
     if (cmin >= 0 && csec >= 0) {
-      text(int(cmin) + ":" + int(csec)%60, 50, 300);
+      String timeText = int(cmin) + ":" + int(csec)%60;
+      textSize(42);
+      textAlign(CENTER);
+      text(timeText, width/2,100);
     }
-    else if (cmin == 0 && csec == 0) {
-      println("FOOD DONE");
-      text("00:00", 50, 300);
+    else {
+      cmin = 0; csec = 0;
+      text("Your Food is Ready!",width/2,height/2);
     }
     
   }
@@ -393,31 +394,31 @@ void draw() {
     background(cooking);
     fill(255);
     noFill();
-    rect(48,60,100,50);
-    rect(48,120,100,50);
-    text("°F", 160,100);
-    text("°C", 160,150);
     stroke(153);
     textSize(36);
-    text(displayTemp, 50,100);
+    textAlign(LEFT);
+    text(displayTemp + "  °F", 50,100);
     celsius = int(displayTemp);
     celsius = (celsius-32);
-    text(celsius*5/9, 50,160);
-    //text(displayTime,50, 300);
-    text(cookFunction,50, 400);
-    println("temp" + displayTemp);
-    println("time" + displayTime);
+    textSize(28);
+    text(celsius*5/9 + "  °C", 50,140);
+    textSize(36);
+    textAlign(RIGHT);
+    text("MODE: " + cookFunction,width-30, 100);
     
     climit = int(displayTime);
     c = climit*60*1000 - millis();
     cmin = (c/(60*1000));
     csec = (c/(1000));
     if (cmin >= 0 && csec >= 0) {
-      text(int(cmin) + ":" + int(csec)%60, 50, 300);
+      String timeText = int(cmin) + ":" + int(csec)%60;
+      textSize(42);
+      textAlign(CENTER);
+      text(timeText, width/2,100);
     }
-    else if (cmin == 0 && csec == 0) {
-      println("FOOD DONE");
-      text("00:00", 50, 300);
+    else {
+      cmin = 0; csec = 0;
+      text("Your Food is Ready!",width/2,height/2);
     }
   }
   
@@ -472,6 +473,7 @@ void mousePressed() {
     }   
   }
   if (p0.checkIfHover()) {
+    
     ps0 = true;
   }
   if (p1.checkIfHover()) {
