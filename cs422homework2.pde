@@ -195,7 +195,6 @@ void setup() {
   picArray[2] = loadImage("pizza.png","png");
   picArray[3] = loadImage("waffle.png","png");
   
-  img.loadPixels();
   toaster.loadPixels();
   homescreen.loadPixels();
   modepage.loadPixels();
