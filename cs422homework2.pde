@@ -25,17 +25,15 @@
 
 
 // placeholder for future image
-PImage img;
 PImage toaster;
 PImage homescreen;
 PImage modepage;
-PImage temperature;
-PImage time;
 PImage cooking;
 PImage check;
 PImage thermometer;
 PImage numpad;
 
+Audio beepSound = new Audio();
 
 int screen;
 
@@ -93,6 +91,9 @@ Button toastMode;
 Button checkMark;
 Button checkMark1;
 Button newButton;
+Button cool;
+Button light;
+Button mute;
 
 Button p0, p1, p2, p3;
 
@@ -143,6 +144,11 @@ boolean checkClicked = false;
 boolean cookSet = false;
 boolean first = false;
 boolean second = false;
+boolean soundP = false;
+
+boolean co = false;
+boolean l = false;
+boolean m = false;
 
 boolean ps0 = false;
 boolean ps1 = false;
@@ -173,8 +179,6 @@ void setup() {
   toaster = loadImage("toaster.jpg", "jpg");
   homescreen = loadImage("homescreen.jpg","jpg");
   modepage = loadImage("modepage.jpg","jpg");
-  temperature = loadImage("temperature.jpg","jpg");
-  time = loadImage("time.jpg","jpg");
   cooking = loadImage("cooking.jpg","jpg");
   check = loadImage("check.png","png");
   thermometer = loadImage("thermometer.png","png");
@@ -193,12 +197,11 @@ void setup() {
   toaster.loadPixels();
   homescreen.loadPixels();
   modepage.loadPixels();
-  temperature.loadPixels();
-  time.loadPixels();
   cooking.loadPixels();
   check.loadPixels();
   thermometer.loadPixels();
   numpad.loadPixels();
+  
   picArray[0].loadPixels();
   picArray[1].loadPixels();
   picArray[2].loadPixels();
@@ -234,8 +237,11 @@ void setup() {
   d2 = new Button (color(20),750,height/2-100, 100,100, "2");
   d3 = new Button (color(20),1050,height/2-100, 100,100, "3");
   
+  beepSound.setAttribute("src","bing.mp3");
   
-  
+  cool = new Button (color(20),60,height-120, 100,50, "COOL");
+  light = new Button (color(20),220,height-120, 100,50, "LIGHT");
+  mute = new Button (color(20),350,height-120, 100,50, "MUTE/UNMUTE");
   
   firstNum = true;
 }
@@ -311,6 +317,10 @@ void draw() {
       displayTime = str(10);
       cookFunction = "PRESET";
     }
+    
+    cool.display();
+    mute.display();
+    light.display();
    
    fill(255);
     noFill();
@@ -319,12 +329,16 @@ void draw() {
     textAlign(LEFT);
     text(displayTemp + "  °F", 50,100);
     celsius = int(displayTemp);
-    celsius = (celsius-32);
+    celsius = int((celsius-32)*(5/9));
     textSize(28);
-    text(celsius*5/9 + "  °C", 50,140);
+    text(celsius + "  °C", 50,140);
     textSize(36);
     textAlign(RIGHT);
     text("MODE: " + cookFunction,width-30, 100);
+    textAlign(RIGHT);
+    text("COOL", 140, height-80);
+    text("LIGHT", 300, height-80);
+    text("MUTE", 450, height-80);
     
     climit = int(displayTime);
     c = climit*60*1000 - millis();
@@ -338,6 +352,10 @@ void draw() {
     }
     else {
       cmin = 0; csec = 0;
+      if (soundP == false) {
+      beepSound.play();
+      soundP = true;
+      }
       text("Your Food is Ready!",width/2,height/2);
     }
     
@@ -393,31 +411,45 @@ void draw() {
     background(cooking);
     fill(255);
     noFill();
-    rect(48,60,100,50);
-    rect(48,120,100,50);
-    text("°F", 160,100);
-    text("°C", 160,150);
     stroke(153);
     textSize(36);
-    text(displayTemp, 50,100);
+    textAlign(LEFT);
+    text(displayTemp + "  °F", 50,100);
     celsius = int(displayTemp);
-    celsius = (celsius-32);
-    text(celsius*5/9, 50,160);
-    //text(displayTime,50, 300);
-    text(cookFunction,50, 400);
-    println("temp" + displayTemp);
-    println("time" + displayTime);
+    celsius = int((celsius-32)*(5/9));
+    textSize(28);
+    text(celsius + "  °C", 50,140);
+    textSize(36);
+    textAlign(RIGHT);
+    text("MODE: " + cookFunction,width-30, 100);
+    
+    text("COOL", 140, height-80);
+    text("LIGHT", 300, height-80);
+    text("MUTE", 450, height-80);
+
+    if (co == true) {
+      println("true");
+      fill(255, 20);
+      rect(30, 20, 55, 55);
+    }
     
     climit = int(displayTime);
     c = climit*60*1000 - millis();
     cmin = (c/(60*1000));
     csec = (c/(1000));
     if (cmin >= 0 && csec >= 0) {
-      text(int(cmin) + ":" + int(csec)%60, 50, 300);
+      String timeText = int(cmin) + ":" + int(csec)%60;
+      textSize(42);
+      textAlign(CENTER);
+      text(timeText, width/2,100);
     }
-    else if (cmin == 0 && csec == 0) {
-      println("FOOD DONE");
-      text("00:00", 50, 300);
+    else {
+      cmin = 0; csec = 0;
+      if (soundP == false) {
+      beepSound.play();
+      soundP = true;
+      }
+      text("Your Food is Ready!",width/2,height/2);
     }
   }
   
@@ -494,6 +526,16 @@ void mousePressed() {
   }
   if (d3.checkIfHover()) {
     pd3 = true;
+  }
+  
+  if (cool.checkIfHover()) {
+    co=true;
+  }
+  if(light.checkIfHover()) {
+    l=true;
+  }
+  if(mute.checkIfHover()) {
+    m=true;
   }
 }
 
