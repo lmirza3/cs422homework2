@@ -317,12 +317,19 @@ void draw() {
       displayTime = str(10);
       cookFunction = "PRESET";
     }
+      if (co == true) {
+      noStroke();
+      fill(0,0,255, 80);
+      rect(18, 42, 1246, 698);
+    }
     
-    cool.display();
-    mute.display();
-    light.display();
-   
-   fill(255);
+    if (l == true) {
+      noStroke();
+      fill(255, 80);
+      rect(18, 42, 1246, 698);
+    }
+    
+    fill(255);
     noFill();
     stroke(153);
     textSize(36);
@@ -352,7 +359,7 @@ void draw() {
     }
     else {
       cmin = 0; csec = 0;
-      if (soundP == false) {
+      if (soundP == false && m ==false) {
       beepSound.play();
       soundP = true;
       }
@@ -409,6 +416,18 @@ void draw() {
   
   if (checkClicked) {
     background(cooking);
+    
+     if (co == true) {
+      noStroke();
+      fill(0,0,255, 80);
+      rect(18, 42, 1246, 698);
+    }
+    
+    if (l == true) {
+      noStroke();
+      fill(255, 80);
+      rect(18, 42, 1246, 698);
+    }
     fill(255);
     noFill();
     stroke(153);
@@ -426,12 +445,6 @@ void draw() {
     text("COOL", 140, height-80);
     text("LIGHT", 300, height-80);
     text("MUTE", 450, height-80);
-
-    if (co == true) {
-      println("true");
-      fill(255, 20);
-      rect(30, 20, 55, 55);
-    }
     
     climit = int(displayTime);
     c = climit*60*1000 - millis();
@@ -445,7 +458,7 @@ void draw() {
     }
     else {
       cmin = 0; csec = 0;
-      if (soundP == false) {
+      if (soundP == false && m == false) {
       beepSound.play();
       soundP = true;
       }
